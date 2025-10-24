@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cửa hàng Cà Phê ABC</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Cửa hàng Cà Phê ABC</h1>
+      <nav>
+        <ul>
+          <li><a href="#">Trang chủ</a></li>
+          <li><a href="#">Sản phẩm</a></li>
+          <li><a href="#">Liên hệ</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section id="gioi-thieu">
+        <h2>Về chúng tôi</h2>
+        <p>
+          Chuyên cung cấp các loại cà phê rang xay nguyên chất, mang đến hương
+          vị đậm đà và tinh tế nhất.
+        </p>
+      </section>
+
+      <section id="actions">
+        <div class="search-container">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Tìm kiếm sản phẩm..."
+          />
+          <button id="searchBtn">Tìm</button>
+        </div>
+        <button id="addProductBtn">Thêm sản phẩm</button>
+      </section>
+
+      <section id="product-list">
+        <h2>Sản phẩm của chúng tôi</h2>
+
+        <article class="product-item">
+          <img src="./Img/robusta.png" alt="Cà phê Robusta" />
+          <h3 class="product-name">Cà phê Robusta rang mộc</h3>
+          <p>
+            Hương vị đậm đà, mạnh mẽ, phù hợp cho người thích cà phê truyền
+            thống.
+          </p>
+          <p>Giá: 120.000 VNĐ / 500g</p>
+        </article>
+
+        <article class="product-item">
+          <img src="./Img/arabica.png" alt="Cà phê Arabica" />
+          <h3 class="product-name">Cà phê Arabica Cầu Đất</h3>
+          <p>Hương thơm nồng nàn, vị chua thanh nhẹ nhàng và hậu vị ngọt.</p>
+          <p>Giá: 180.000 VNĐ / 500g</p>
+        </article>
+
+        <article class="product-item">
+          <img src="./Img/phin.png" alt="Cà phê Phin Blend" />
+          <h3 class="product-name">Cà phê Phin Blend</h3>
+          <p>
+            Sự kết hợp hoàn hảo giữa Robusta và Arabica, tối ưu cho pha phin.
+          </p>
+          <p>Giá: 150.000 VNĐ / 500g</p>
+        </article>
+      </section>
+
+      <section id="form-section" class="hidden">
+        <h2>Thêm sản phẩm mới</h2>
+        <form id="addProductForm">
+          <div>
+            <label for="newName">Tên sản phẩm:</label>
+            <input type="text" id="newName" name="newName" required />
+          </div>
+          <div>
+            <label for="newPrice">Giá:</label>
+            <input type="number" id="newPrice" name="newPrice" required />
+          </div>
+          <div>
+            <label for="newDesc">Mô tả:</label>
+            <textarea id="newDesc" name="newDesc" rows="3"></textarea>
+          </div>
+          <div class="form-buttons">
+            <button type="submit">Thêm</button>
+            <button type="cancel" id="cancelBtn">Hủy</button>
+          </div>
+          <p id="errorMsg" style="color: red"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Cửa hàng Cà Phê ABC. Đã đăng ký bản quyền.</p>
+      <p>Địa chỉ: 123 Đường ABC, Quận 1, TP. HCM</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
