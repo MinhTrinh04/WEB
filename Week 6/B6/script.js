@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const addProductSection = document.getElementById("form-section");
     const searchBtn = document.getElementById("searchBtn");
     const searchInput = document.getElementById("searchInput");
+    const priceFilter = document.getElementById("priceFilter");
     const addProductForm = document.getElementById("addProductForm");
     const cancelBtn = document.getElementById("cancelBtn");
     const productList = document.getElementById("product-list");
@@ -81,33 +82,61 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function hideForm() {
+        addProductSection.style.maxHeight = "0";
+        addProductSection.classList.add("hidden");
+        addProductBtn.textContent = "Thêm sản phẩm";
+    }
+
     addProductBtn.addEventListener("click", function () {
-        addProductSection.classList.toggle("hidden");
         if (addProductSection.classList.contains("hidden")) {
-            addProductBtn.textContent = "Thêm sản phẩm";
-        } else {
+            addProductSection.classList.remove("hidden");
+            addProductSection.style.maxHeight = addProductSection.scrollHeight + "px";
             addProductBtn.textContent = "Đóng";
+        } else {
+            hideForm();
         }
     });
 
     function filterProducts() {
         const searchTerm = searchInput.value.toLowerCase().trim();
+        const priceValue = priceFilter.value;
+
+        let minPrice = 0;
+        let maxPrice = Infinity;
+
+        if (priceValue !== "all") {
+            [minPrice, maxPrice] = priceValue.split('-').map(Number);
+        }
+
         const productItems = document.querySelectorAll(".product-item");
 
         productItems.forEach(function (item) {
             const productNameElement = item.querySelector(".product-name");
-            if (productNameElement) {
-                const productName = productNameElement.textContent.toLowerCase();
-                if (productName.includes(searchTerm)) {
-                    item.style.display = "";
-                } else {
-                    item.style.display = "none";
-                }
+            const priceElement = item.querySelector("p:last-child");
+            let productPrice = 0;
+
+            if (priceElement) {
+                const priceText = priceElement.textContent;
+                productPrice = parseFloat(priceText.replace('Giá: ', '').replace(/\./g, ''));
+            }
+
+            const productName = productNameElement ? productNameElement.textContent.toLowerCase() : "";
+
+            const nameMatch = productName.includes(searchTerm);
+            const priceMatch = (productPrice >= minPrice && productPrice <= maxPrice);
+
+            if (nameMatch && priceMatch) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
             }
         });
     }
+
     searchBtn.addEventListener("click", filterProducts);
     searchInput.addEventListener("keyup", filterProducts);
+    priceFilter.addEventListener("change", filterProducts);
 
     addProductForm.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -128,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
             img: "./Img/default.png",
             name: name,
             desc: desc,
-            price: priceValue + " VNĐ"
+            price: priceValue.toLocaleString('vi-VN') + " VNĐ"
         };
 
         products.push(newProduct);
@@ -138,17 +167,18 @@ document.addEventListener("DOMContentLoaded", function () {
         productList.appendChild(newElement);
 
         addProductForm.reset();
-        addProductSection.classList.add("hidden");
-        addProductBtn.textContent = "Thêm sản phẩm";
+        hideForm();
     });
 
     cancelBtn.addEventListener("click", function () {
-        addProductSection.classList.add("hidden");
-        addProductBtn.textContent = "Thêm sản phẩm";
+        hideForm();
         errorMsg.textContent = "";
         addProductForm.reset();
     });
 
     loadProducts();
+
+    addProductSection.classList.add("hidden");
+    addProductSection.style.maxHeight = "0";
 
 });

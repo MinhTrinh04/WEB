@@ -31,7 +31,6 @@ main {
     padding: 0 20px;
 }
 
-/* Header và Navigation */
 header {
     background-color: var(--nau-cafe);
     color: var(--trang-sua);
@@ -73,7 +72,6 @@ header nav a:hover {
     text-decoration: underline;
 }
 
-/* Tìm kiếm */
 #actions {
     display: flex;
     justify-content: space-between;
@@ -92,7 +90,8 @@ header nav a:hover {
     flex-grow: 1;
 }
 
-#actions input[type="text"] {
+#actions input[type="text"],
+#actions select {
     flex-grow: 1;
     padding: 8px;
     border: 1px solid var(--nau-cafe);
@@ -100,7 +99,7 @@ header nav a:hover {
     border-radius: 4px;
     color: var(--nau-cafe);
     font-family: 'iCiel Lodestone', sans-serif;
-    min-width: 200px;
+    min-width: 150px;
 }
 
 #actions button {
@@ -119,8 +118,6 @@ header nav a:hover {
     background-color: #5c4431;
 }
 
-
-/* Danh sách sản phẩm */
 #product-list {
     display: flex;
     flex-wrap: wrap;
@@ -162,13 +159,16 @@ header nav a:hover {
     border-radius: 4px;
 }
 
-/* Form */
 #form-section {
     text-align: center;
     margin-top: 40px;
     padding: 20px;
     background: var(--vang-be);
     border-radius: 5px;
+
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    max-height: 0;
 }
 
 #form-section h2 {
@@ -202,7 +202,6 @@ header nav a:hover {
     border-radius: 4px;
     color: var(--nau-cafe);
     font-family: 'iCiel Lodestone', sans-serif;
-    /* Đảm bảo font nhất quán */
 }
 
 #addProductForm button[type="submit"] {
@@ -220,7 +219,6 @@ header nav a:hover {
     background-color: #5c4431;
 }
 
-/* Ẩn thông báo lỗi trống */
 #errorMsg:empty {
     display: none;
 }
@@ -267,7 +265,6 @@ header nav a:hover {
     display: none;
 }
 
-/* Footer */
 footer {
     text-align: center;
     padding: 20px 0;
@@ -281,7 +278,6 @@ footer p {
     margin: 5px 0;
 }
 
-/* Responsive */
 @media (max-width: 600px) {
     header nav ul {
         flex-direction: column;
@@ -311,6 +307,7 @@ footer p {
 
     #actions .search-container {
         width: 100%;
+        flex-direction: column;
     }
 
     #actions button {
