@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'iCiel Lodestone';
+    src: url('font/iCielBC-Lodestone.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 :root {
     --nau-cafe: #7a5b43;
     --vang-be: #dfcebb;
@@ -5,7 +12,8 @@
 }
 
 body {
-    font-family: sans-serif;
+    font-family: 'iCiel Lodestone', sans-serif;
+    letter-spacing: 0.25px;
     line-height: 1.6;
     margin: 0;
     padding: 0;
@@ -29,6 +37,9 @@ header {
     color: var(--trang-sua);
     padding: 10px 20px;
     text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 header h1 {
