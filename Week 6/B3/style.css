@@ -73,6 +73,53 @@ header nav a:hover {
     text-decoration: underline;
 }
 
+/* Tìm kiếm */
+#actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 0;
+    padding: 15px;
+    background: var(--vang-be);
+    border-radius: 5px;
+}
+
+#actions .search-container {
+    display: flex;
+    gap: 5px;
+    flex-grow: 1;
+}
+
+#actions input[type="text"] {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid var(--nau-cafe);
+    background-color: var(--trang-sua);
+    border-radius: 4px;
+    color: var(--nau-cafe);
+    font-family: 'iCiel Lodestone', sans-serif;
+    min-width: 200px;
+}
+
+#actions button {
+    background-color: var(--nau-cafe);
+    color: var(--trang-sua);
+    padding: 9px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'iCiel Lodestone', sans-serif;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+#actions button:hover {
+    background-color: #5c4431;
+}
+
+
 /* Danh sách sản phẩm */
 #product-list {
     display: flex;
@@ -91,6 +138,7 @@ header nav a:hover {
     padding: 10px;
     border-radius: 4px;
     background: #fff;
+    transition: opacity 0.3s ease;
 }
 
 .product-item h3 {
@@ -114,8 +162,8 @@ header nav a:hover {
     border-radius: 4px;
 }
 
-/* Form và Footer */
-#contact-form {
+/* Form */
+#form-section {
     text-align: center;
     margin-top: 40px;
     padding: 20px;
@@ -123,34 +171,41 @@ header nav a:hover {
     border-radius: 5px;
 }
 
-#contact-form form {
+#form-section h2 {
+    margin-top: 0;
+}
+
+#addProductForm {
     max-width: 400px;
     margin: 20px auto;
     text-align: left;
 }
 
-#contact-form div {
+#addProductForm div {
     margin-bottom: 15px;
 }
 
-#contact-form label {
+#addProductForm label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-#contact-form input[type="text"],
-#contact-form input[type="email"],
-#contact-form textarea {
+#addProductForm input[type="text"],
+#addProductForm input[type="email"],
+#addProductForm input[type="number"],
+#addProductForm textarea {
     width: 100%;
     padding: 8px;
     border: 1px solid var(--nau-cafe);
     background-color: var(--trang-sua);
     border-radius: 4px;
     color: var(--nau-cafe);
+    font-family: 'iCiel Lodestone', sans-serif;
+    /* Đảm bảo font nhất quán */
 }
 
-#contact-form button[type="submit"] {
+#addProductForm button[type="submit"] {
     background-color: var(--nau-cafe);
     color: var(--trang-sua);
     padding: 10px 15px;
@@ -158,10 +213,20 @@ header nav a:hover {
     border-radius: 4px;
     cursor: pointer;
     font-size: 1rem;
+    font-family: 'iCiel Lodestone', sans-serif;
 }
 
-#contact-form button[type="submit"]:hover {
+#addProductForm button[type="submit"]:hover {
     background-color: #5c4431;
+}
+
+/* Ẩn thông báo lỗi trống */
+#errorMsg:empty {
+    display: none;
+}
+
+.hidden {
+    display: none;
 }
 
 /* Footer */
@@ -199,5 +264,18 @@ footer p {
 
     header h1 {
         font-size: 2rem;
+    }
+
+    #actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #actions .search-container {
+        width: 100%;
+    }
+
+    #actions button {
+        width: 100%;
     }
 }
