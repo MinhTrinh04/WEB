@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>React CRUD - Step 6</title>
+    <title>React CRUD - Step 7</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -172,6 +172,10 @@
           setEditing(null);
         };
 
+        const removeUser = (id) => {
+          setUsers((prev) => prev.filter((u) => u.id !== id));
+        };
+
         const handleEditChange = (e) => {
           const { id, value } = e.target;
           if (["street", "suite", "city"].includes(id)) {
@@ -265,7 +269,7 @@
                     <td>{u.address.city}</td>
                     <td>
                       <button onClick={() => editUser(u)}>Sửa</button>
-                      <button onClick={() => alert("Chưa làm")}>Xóa</button>
+                      <button onClick={() => removeUser(u.id)}>Xóa</button>
                     </td>
                   </tr>
                 ))}
