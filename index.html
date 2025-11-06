@@ -1,34 +1,124 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>React CRUD - Step 7</title>
+    <title>React CRUD - Step 8 (Final)</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
+      :root {
+        --nau-cafe: #7a5b43;
+        --vang-be: #dfcebb;
+        --trang-sua: #f0e9da;
+        --text-dark: #333;
+        --white: #ffffff;
+        --danger: #d9534f;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: var(--trang-sua);
+        color: var(--text-dark);
+        padding: 20px;
+      }
+
+      h1,
+      h4 {
+        color: var(--nau-cafe);
+      }
+
       table {
         border-collapse: collapse;
         width: 100%;
+        margin-top: 20px;
+        background-color: var(--white);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
+
       th,
       td {
-        border: 1px solid #ddd;
-        padding: 8px;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
-      .form {
-        border: 1px solid #ccc;
+        border: 1px solid var(--vang-be);
         padding: 10px;
-        margin-bottom: 10px;
+        text-align: left;
       }
-      .form div {
+
+      th {
+        background-color: var(--vang-be);
+        color: var(--nau-cafe);
+      }
+
+      input[type="text"] {
+        padding: 8px;
+        border: 1px solid var(--vang-be);
+        border-radius: 4px;
+        width: calc(100% - 18px);
+      }
+
+      button {
+        background-color: var(--nau-cafe);
+        color: var(--white);
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 5px;
+        font-weight: bold;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      button.btn-delete {
+        background-color: var(--danger);
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+      }
+
+      .modal-content {
+        background: var(--white);
+        padding: 20px;
+        border-radius: 6px;
+        width: 400px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
         margin-bottom: 5px;
+        font-weight: bold;
+        color: var(--nau-cafe);
       }
-      .form label {
-        display: inline-block;
-        width: 80px;
+
+      .form-actions {
+        margin-top: 20px;
+        text-align: right;
+      }
+
+      .search-add-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .search-add-container input {
+        width: 300px;
       }
     </style>
   </head>
@@ -42,7 +132,6 @@
             type="text"
             placeholder="Tìm theo name, username"
             onChange={(e) => onChangeValue(e.target.value)}
-            style={{ marginBottom: "10px" }}
           />
         );
       }
@@ -90,52 +179,56 @@
           setAdding(false);
         };
 
-        if (!adding) {
-          return <button onClick={() => setAdding(true)}>Thêm</button>;
-        }
-
         return (
-          <div className="form">
-            <h4>Thêm người dùng</h4>
-            <div>
-              <label htmlFor="name">Name:</label>
-              <input
-                id="name"
-                type="text"
-                value={user.name}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="username">Username:</label>
-              <input
-                id="username"
-                type="text"
-                value={user.username}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="email">Email:</label>
-              <input
-                id="email"
-                type="text"
-                value={user.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="city">City:</label>
-              <input
-                id="city"
-                type="text"
-                value={user.address.city}
-                onChange={handleChange}
-              />
-            </div>
-            <button onClick={handleAdd}>Lưu</button>
-            <button onClick={() => setAdding(false)}>Hủy</button>
-            <hr />
+          <div>
+            <button onClick={() => setAdding(true)}>Thêm người dùng</button>
+            {adding && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <h4>Thêm người dùng</h4>
+                  <div className="form-group">
+                    <label htmlFor="name">Name:</label>
+                    <input
+                      id="name"
+                      type="text"
+                      value={user.name}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="username">Username:</label>
+                    <input
+                      id="username"
+                      type="text"
+                      value={user.username}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="email">Email:</label>
+                    <input
+                      id="email"
+                      type="text"
+                      value={user.email}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="city">City:</label>
+                    <input
+                      id="city"
+                      type="text"
+                      value={user.address.city}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-actions">
+                    <button onClick={handleAdd}>Lưu</button>
+                    <button onClick={() => setAdding(false)}>Hủy</button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         );
       }
@@ -173,7 +266,9 @@
         };
 
         const removeUser = (id) => {
-          setUsers((prev) => prev.filter((u) => u.id !== id));
+          if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
+            setUsers((prev) => prev.filter((u) => u.id !== id));
+          }
         };
 
         const handleEditChange = (e) => {
@@ -204,47 +299,50 @@
         return (
           <div>
             {editing && (
-              <div className="form">
-                <h4>Sửa người dùng (ID: {editing.id})</h4>
-                <div>
-                  <label htmlFor="name">Name:</label>
-                  <input
-                    id="name"
-                    type="text"
-                    value={editing.name}
-                    onChange={handleEditChange}
-                  />
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <h4>Sửa người dùng (ID: {editing.id})</h4>
+                  <div className="form-group">
+                    <label htmlFor="name">Name:</label>
+                    <input
+                      id="name"
+                      type="text"
+                      value={editing.name}
+                      onChange={handleEditChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="username">Username:</label>
+                    <input
+                      id="username"
+                      type="text"
+                      value={editing.username}
+                      onChange={handleEditChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="email">Email:</label>
+                    <input
+                      id="email"
+                      type="text"
+                      value={editing.email}
+                      onChange={handleEditChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="city">City:</label>
+                    <input
+                      id="city"
+                      type="text"
+                      value={editing.address.city}
+                      onChange={handleEditChange}
+                    />
+                  </div>
+                  <div className="form-actions">
+                    <button onClick={saveUser}>Lưu thay đổi</button>
+                    <button onClick={() => setEditing(null)}>Hủy</button>
+                  </div>
                 </div>
-                <div>
-                  <label htmlFor="username">Username:</label>
-                  <input
-                    id="username"
-                    type="text"
-                    value={editing.username}
-                    onChange={handleEditChange}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email">Email:</label>
-                  <input
-                    id="email"
-                    type="text"
-                    value={editing.email}
-                    onChange={handleEditChange}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="city">City:</label>
-                  <input
-                    id="city"
-                    type="text"
-                    value={editing.address.city}
-                    onChange={handleEditChange}
-                  />
-                </div>
-                <button onClick={saveUser}>Lưu thay đổi</button>
-                <button onClick={() => setEditing(null)}>Hủy</button>
-                <hr />
               </div>
             )}
 
@@ -269,7 +367,12 @@
                     <td>{u.address.city}</td>
                     <td>
                       <button onClick={() => editUser(u)}>Sửa</button>
-                      <button onClick={() => removeUser(u.id)}>Xóa</button>
+                      <button
+                        className="btn-delete"
+                        onClick={() => removeUser(u.id)}
+                      >
+                        Xóa
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -286,8 +389,10 @@
         return (
           <div>
             <h1>Quản lý người dùng</h1>
-            <SearchForm onChangeValue={setKeyword} />
-            <AddUser onAdd={setNewUser} />
+            <div className="search-add-container">
+              <SearchForm onChangeValue={setKeyword} />
+              <AddUser onAdd={setNewUser} />
+            </div>
             <ResultTable
               keyword={kw}
               user={newUser}
