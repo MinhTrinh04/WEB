@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React CRUD cơ bản</title>
+    <meta charset="UTF-8" />
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // 4. Tạo component gốc App
+      // [cite: 19, 21]
+      function App() {
+        return (
+          <div>
+            <h1>Quản lý người dùng</h1>
+          </div>
+        );
+      }
+
+      // 4. ...và render bằng ReactDOM
+      // [cite: 22]
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
