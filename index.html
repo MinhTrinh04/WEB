@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>React CRUD - Step 2</title>
+    <title>React CRUD - Step 3</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -12,9 +12,11 @@
     <script type="text/babel">
       function SearchForm({ onChangeValue }) {
         return (
-          <div>
-            <i>(Đây là SearchForm)</i>
-          </div>
+          <input
+            type="text"
+            placeholder="Tìm theo name, username"
+            onChange={(e) => onChangeValue(e.target.value)}
+          />
         );
       }
 
@@ -29,7 +31,11 @@
       function ResultTable({ keyword, user, onAdded }) {
         return (
           <div>
+            <hr />
             <i>(Đây là ResultTable)</i>
+            <p>
+              Từ khoá đang nhận: <b>{keyword}</b>
+            </p>
           </div>
         );
       }
