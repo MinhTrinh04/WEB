@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>React CRUD - Step 4</title>
+    <title>React CRUD - Step 5</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -18,6 +18,18 @@
       th {
         background-color: #f2f2f2;
       }
+      .add-form {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .add-form div {
+        margin-bottom: 5px;
+      }
+      .add-form label {
+        display: inline-block;
+        width: 80px;
+      }
     </style>
   </head>
   <body>
@@ -30,14 +42,99 @@
             type="text"
             placeholder="Tìm theo name, username"
             onChange={(e) => onChangeValue(e.target.value)}
+            style={{ marginBottom: "10px" }}
           />
         );
       }
 
       function AddUser({ onAdd }) {
+        const [adding, setAdding] = React.useState(false);
+        const [user, setUser] = React.useState({
+          name: "",
+          username: "",
+          email: "",
+          address: { street: "", suite: "", city: "" },
+          phone: "",
+          website: "",
+        });
+
+        const handleChange = (e) => {
+          const { id, value } = e.target;
+          if (["street", "suite", "city"].includes(id)) {
+            setUser((prev) => ({
+              ...prev,
+              address: { ...prev.address, [id]: value },
+            }));
+          } else {
+            setUser((prev) => ({
+              ...prev,
+              [id]: value,
+            }));
+          }
+        };
+
+        const handleAdd = () => {
+          if (user.name === "" || user.username === "") {
+            alert("Vui lòng nhập Name và Username!");
+            return;
+          }
+          onAdd(user);
+          setUser({
+            name: "",
+            username: "",
+            email: "",
+            address: { street: "", suite: "", city: "" },
+            phone: "",
+            website: "",
+          });
+          setAdding(false);
+        };
+
+        if (!adding) {
+          return <button onClick={() => setAdding(true)}>Thêm</button>;
+        }
+
         return (
-          <div>
-            <i>(Đây là AddUser)</i>
+          <div className="add-form">
+            <h4>Thêm người dùng</h4>
+            <div>
+              <label htmlFor="name">Name:</label>
+              <input
+                id="name"
+                type="text"
+                value={user.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="username">Username:</label>
+              <input
+                id="username"
+                type="text"
+                value={user.username}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="email">Email:</label>
+              <input
+                id="email"
+                type="text"
+                value={user.email}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="city">City:</label>
+              <input
+                id="city"
+                type="text"
+                value={user.address.city}
+                onChange={handleChange}
+              />
+            </div>
+            <button onClick={handleAdd}>Lưu</button>
+            <button onClick={() => setAdding(false)}>Hủy</button>
             <hr />
           </div>
         );
@@ -55,6 +152,13 @@
               setLoading(false);
             });
         }, []);
+
+        React.useEffect(() => {
+          if (user) {
+            setUsers((prev) => [...prev, { ...user, id: prev.length + 1 }]);
+            onAdded();
+          }
+        }, [user]);
 
         const filteredUsers = users.filter(
           (u) =>
