@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>React CRUD cơ bản</title>
-    <meta charset="UTF-8" />
-
+    <title>React CRUD - Step 2</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -12,18 +10,48 @@
     <div id="root"></div>
 
     <script type="text/babel">
-      // 4. Tạo component gốc App
-      // [cite: 19, 21]
-      function App() {
+      function SearchForm({ onChangeValue }) {
         return (
           <div>
-            <h1>Quản lý người dùng</h1>
+            <i>(Đây là SearchForm)</i>
           </div>
         );
       }
 
-      // 4. ...và render bằng ReactDOM
-      // [cite: 22]
+      function AddUser({ onAdd }) {
+        return (
+          <div>
+            <i>(Đây là AddUser)</i>
+          </div>
+        );
+      }
+
+      function ResultTable({ keyword, user, onAdded }) {
+        return (
+          <div>
+            <i>(Đây là ResultTable)</i>
+          </div>
+        );
+      }
+
+      function App() {
+        const [kw, setKeyword] = React.useState("");
+        const [newUser, setNewUser] = React.useState(null);
+
+        return (
+          <div>
+            <h1>Quản lý người dùng</h1>
+            <SearchForm onChangeValue={setKeyword} />
+            <AddUser onAdd={setNewUser} />
+            <ResultTable
+              keyword={kw}
+              user={newUser}
+              onAdded={() => setNewUser(null)}
+            />
+          </div>
+        );
+      }
+
       const root = ReactDOM.createRoot(document.getElementById("root"));
       root.render(<App />);
     </script>
