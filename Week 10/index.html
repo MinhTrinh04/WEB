@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,10 +10,43 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --nau-cafe: #7a5b43;
+        --vang-be: #dfcebb;
+        --trang-sua: #f0e9da;
+        --text-dark: #333;
+        --white: #ffffff;
+        --danger: #d9534f;
+      }
+      body {
+        font-family: "Nunito", sans-serif;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cafe: "var(--nau-cafe)",
+              be: "var(--vang-be)",
+              sua: "var(--trang-sua)",
+              dark: "var(--text-dark)",
+              danger: "var(--danger)",
+            },
+          },
+        },
+      };
+    </script>
   </head>
-  <body class="bg-gray-100 text-gray-800 font-sans">
-    <div class="container mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold text-center mb-8 text-blue-600">
+  <body class="bg-sua text-dark h-screen flex flex-col">
+    <div class="container mx-auto px-4 py-8 flex-grow">
+      <h1 class="text-4xl font-bold text-center mb-8 text-cafe drop-shadow-sm">
         User Management System
       </h1>
 
@@ -22,56 +55,58 @@
       >
         <div class="relative w-full md:w-1/3">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-            <i class="fas fa-search text-gray-400"></i>
+            <i class="fas fa-search text-cafe opacity-50"></i>
           </span>
           <input
             type="text"
             id="searchInput"
-            placeholder="Search by name..."
-            class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
+            placeholder="Tìm kiếm theo tên..."
+            class="w-full py-2 pl-10 pr-4 border-2 border-be rounded-lg focus:outline-none focus:border-cafe focus:ring-1 focus:ring-cafe bg-white placeholder-gray-400 shadow-sm transition text-dark"
           />
         </div>
         <button
           onclick="openModal()"
-          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow transition flex items-center gap-2"
+          class="bg-cafe hover:opacity-90 text-white font-bold py-2 px-6 rounded-lg shadow-md transition transform hover:-translate-y-0.5 flex items-center gap-2 border border-cafe"
         >
-          <i class="fas fa-plus"></i> Add New User
+          <i class="fas fa-plus"></i> Thêm người dùng
         </button>
       </div>
 
       <div id="loading" class="hidden text-center py-10">
-        <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
-        <p class="mt-2 text-gray-600">Loading data...</p>
+        <i class="fas fa-circle-notch fa-spin text-4xl text-cafe"></i>
+        <p class="mt-2 text-cafe font-semibold">Đang tải dữ liệu...</p>
       </div>
 
-      <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+      <div
+        class="overflow-x-auto bg-white rounded-xl shadow-lg border border-be"
+      >
         <table class="min-w-full leading-normal">
           <thead>
             <tr>
               <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                class="px-5 py-4 border-b-2 border-be bg-be text-left text-xs font-bold text-cafe uppercase tracking-wider"
               >
                 ID
               </th>
               <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                class="px-5 py-4 border-b-2 border-be bg-be text-left text-xs font-bold text-cafe uppercase tracking-wider"
               >
-                Name
+                Tên
               </th>
               <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                class="px-5 py-4 border-b-2 border-be bg-be text-left text-xs font-bold text-cafe uppercase tracking-wider"
               >
                 Email
               </th>
               <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                class="px-5 py-4 border-b-2 border-be bg-be text-left text-xs font-bold text-cafe uppercase tracking-wider"
               >
-                Phone
+                Số điện thoại
               </th>
               <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                class="px-5 py-4 border-b-2 border-be bg-be text-center text-xs font-bold text-cafe uppercase tracking-wider"
               >
-                Actions
+                Hành động
               </th>
             </tr>
           </thead>
@@ -79,107 +114,112 @@
         </table>
       </div>
 
-      <div id="emptyState" class="hidden text-center py-8 text-gray-500">
-        No users found.
+      <div
+        id="emptyState"
+        class="hidden text-center py-12 text-cafe opacity-75 italic"
+      >
+        Không tìm thấy người dùng nào.
       </div>
 
       <div
-        class="flex justify-center items-center mt-6 gap-4"
+        class="flex justify-center items-center mt-8 gap-4"
         id="paginationControls"
       >
         <button
           id="prevBtn"
           onclick="changePage(-1)"
-          class="px-4 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="px-4 py-2 bg-white border-2 border-be text-cafe rounded-md hover:bg-sua font-semibold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
-          Previous
+          Trước
         </button>
-        <span id="pageInfo" class="text-gray-600 font-medium">Page 1 of 1</span>
+        <span
+          id="pageInfo"
+          class="text-cafe font-bold bg-white px-4 py-2 rounded-md shadow-sm border border-be"
+          >Trang 1 / 1</span
+        >
         <button
           id="nextBtn"
           onclick="changePage(1)"
-          class="px-4 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="px-4 py-2 bg-white border-2 border-be text-cafe rounded-md hover:bg-sua font-semibold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
-          Next
+          Sau
         </button>
       </div>
     </div>
 
     <div
       id="userModal"
-      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50"
+      class="fixed inset-0 bg-cafe bg-opacity-60 hidden flex items-center justify-center z-50 backdrop-blur-sm"
     >
       <div
-        class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform transition-all scale-100"
+        class="bg-white rounded-xl shadow-2xl w-full max-w-md p-8 transform transition-all scale-100 border-4 border-be"
       >
-        <div class="flex justify-between items-center mb-4">
-          <h2 id="modalTitle" class="text-xl font-bold text-gray-800">
-            Add New User
+        <div
+          class="flex justify-between items-center mb-6 border-b border-be pb-4"
+        >
+          <h2 id="modalTitle" class="text-2xl font-bold text-cafe">
+            Thêm người dùng
           </h2>
           <button
             onclick="closeModal()"
-            class="text-gray-400 hover:text-gray-600 focus:outline-none"
+            class="text-cafe hover:text-danger focus:outline-none transition"
           >
-            <i class="fas fa-times text-xl"></i>
+            <i class="fas fa-times text-2xl"></i>
           </button>
         </div>
 
         <form id="userForm" onsubmit="handleFormSubmit(event)">
           <input type="hidden" id="userId" />
           <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="name"
-              >Name</label
+            <label class="block text-cafe text-sm font-bold mb-2" for="name"
+              >Tên</label
             >
             <input
               type="text"
               id="name"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-              placeholder="Enter full name"
+              class="w-full px-4 py-2 border-2 border-be rounded-lg focus:outline-none focus:border-cafe bg-sua bg-opacity-30 text-dark"
+              placeholder="Nhập họ tên"
             />
           </div>
           <div class="mb-4">
-            <label
-              class="block text-gray-700 text-sm font-bold mb-2"
-              for="email"
+            <label class="block text-cafe text-sm font-bold mb-2" for="email"
               >Email</label
             >
             <input
               type="email"
               id="email"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-              placeholder="Enter email address"
+              class="w-full px-4 py-2 border-2 border-be rounded-lg focus:outline-none focus:border-cafe bg-sua bg-opacity-30 text-dark"
+              placeholder="Nhập email"
             />
           </div>
-          <div class="mb-6">
-            <label
-              class="block text-gray-700 text-sm font-bold mb-2"
-              for="phone"
-              >Phone</label
+          <div class="mb-8">
+            <label class="block text-cafe text-sm font-bold mb-2" for="phone"
+              >Số điện thoại</label
             >
             <input
               type="text"
               id="phone"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-              placeholder="Enter phone number"
+              class="w-full px-4 py-2 border-2 border-be rounded-lg focus:outline-none focus:border-cafe bg-sua bg-opacity-30 text-dark"
+              placeholder="Nhập số điện thoại"
             />
           </div>
           <div class="flex justify-end gap-3">
             <button
               type="button"
               onclick="closeModal()"
-              class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+              class="px-5 py-2 bg-sua text-cafe font-bold rounded-lg hover:bg-be transition border border-be"
             >
-              Cancel
+              Hủy
             </button>
             <button
               type="submit"
               id="submitBtn"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md"
+              class="px-5 py-2 bg-cafe text-white font-bold rounded-lg hover:opacity-90 transition shadow-md"
             >
-              <i class="fas fa-save mr-1"></i> Save
+              <i class="fas fa-save mr-1"></i> Lưu
             </button>
           </div>
         </form>
@@ -188,17 +228,16 @@
 
     <div
       id="toast"
-      class="fixed bottom-5 right-5 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 transition-transform duration-300 flex items-center gap-3 z-50"
+      class="fixed bottom-5 right-5 bg-cafe text-white px-6 py-4 rounded-xl shadow-2xl transform translate-y-40 transition-transform duration-300 flex items-center gap-3 z-50 border-2 border-be"
     >
-      <i id="toastIcon" class="fas fa-check-circle text-green-400"></i>
-      <span id="toastMessage">Operation successful</span>
+      <i id="toastIcon" class="fas fa-check-circle text-be text-xl"></i>
+      <span id="toastMessage" class="font-semibold">Thành công</span>
     </div>
 
     <script>
       const API_URL = "https://jsonplaceholder.typicode.com/users";
       let users = [];
       let filteredUsers = [];
-
       let currentPage = 1;
       const itemsPerPage = 5;
 
@@ -210,7 +249,6 @@
 
       document.addEventListener("DOMContentLoaded", () => {
         fetchUsers();
-
         document
           .getElementById("searchInput")
           .addEventListener("input", (e) => {
@@ -226,8 +264,7 @@
           filteredUsers = [...users];
           renderTable();
         } catch (error) {
-          console.error("Error fetching users:", error);
-          showToast("Failed to load users", "error");
+          showToast("Không thể tải dữ liệu", "error");
         } finally {
           showLoading(false);
         }
@@ -240,42 +277,36 @@
         const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
         const phone = document.getElementById("phone").value;
-
         const userData = { name, email, phone };
         const submitBtn = document.getElementById("submitBtn");
         const originalBtnText = submitBtn.innerHTML;
 
         submitBtn.innerHTML =
-          '<i class="fas fa-spinner fa-spin"></i> Saving...';
+          '<i class="fas fa-circle-notch fa-spin"></i> Đang lưu...';
         submitBtn.disabled = true;
 
         try {
           if (id) {
             await api.put(`/${id}`, userData);
-
             const index = users.findIndex((u) => u.id == id);
             if (index !== -1) {
               users[index] = { ...users[index], ...userData };
-              showToast("User updated successfully");
+              showToast("Cập nhật thành công");
             }
           } else {
             const response = await api.post("/", userData);
-
             const newUser = {
               ...response.data,
               id:
                 users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1,
             };
-
             users.unshift(newUser);
-            showToast("User created successfully");
+            showToast("Thêm mới thành công");
           }
-
           handleSearch(document.getElementById("searchInput").value);
           closeModal();
         } catch (error) {
-          console.error("Error saving user:", error);
-          showToast("Error saving data", "error");
+          showToast("Lỗi khi lưu dữ liệu", "error");
         } finally {
           submitBtn.innerHTML = originalBtnText;
           submitBtn.disabled = false;
@@ -283,19 +314,14 @@
       }
 
       async function deleteUser(id) {
-        if (!confirm("Are you sure you want to delete this user?")) return;
-
+        if (!confirm("Bạn có chắc muốn xóa người dùng này?")) return;
         try {
           await api.delete(`/${id}`);
-
           users = users.filter((u) => u.id != id);
-
-          showToast("User deleted successfully");
-
+          showToast("Đã xóa người dùng");
           handleSearch(document.getElementById("searchInput").value);
         } catch (error) {
-          console.error("Error deleting user:", error);
-          showToast("Failed to delete user", "error");
+          showToast("Lỗi khi xóa", "error");
         }
       }
 
@@ -326,49 +352,40 @@
 
         paginatedUsers.forEach((user) => {
           const row = `
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="px-5 py-4 border-b border-gray-200 text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap font-medium">#${
-                              user.id
-                            }</p>
+                    <tr class="hover:bg-sua hover:bg-opacity-50 transition border-b border-gray-100 last:border-b-0">
+                        <td class="px-5 py-4 text-sm text-dark font-semibold">
+                            #${user.id}
                         </td>
-                        <td class="px-5 py-4 border-b border-gray-200 text-sm">
+                        <td class="px-5 py-4 text-sm">
                             <div class="flex items-center">
-                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-3">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-cafe text-be flex items-center justify-center font-bold mr-3 border-2 border-be shadow-sm">
                                     ${user.name.charAt(0).toUpperCase()}
                                 </div>
-                                <p class="text-gray-900 whitespace-no-wrap">${
-                                  user.name
-                                }</p>
+                                <p class="text-dark font-bold">${user.name}</p>
                             </div>
                         </td>
-                        <td class="px-5 py-4 border-b border-gray-200 text-sm">
-                            <p class="text-gray-600 whitespace-no-wrap">${
-                              user.email
-                            }</p>
+                        <td class="px-5 py-4 text-sm text-dark">
+                            ${user.email}
                         </td>
-                        <td class="px-5 py-4 border-b border-gray-200 text-sm">
-                            <p class="text-gray-600 whitespace-no-wrap">${
-                              user.phone
-                            }</p>
+                        <td class="px-5 py-4 text-sm text-dark">
+                            ${user.phone}
                         </td>
-                        <td class="px-5 py-4 border-b border-gray-200 text-sm text-center">
+                        <td class="px-5 py-4 text-sm text-center">
                             <button onclick="openModal(${
                               user.id
-                            })" class="text-blue-600 hover:text-blue-900 mr-3 transition" title="Edit">
-                                <i class="fas fa-edit"></i>
+                            })" class="text-cafe hover:text-dark mr-4 transition transform hover:scale-110" title="Sửa">
+                                <i class="fas fa-edit text-lg"></i>
                             </button>
                             <button onclick="deleteUser(${
                               user.id
-                            })" class="text-red-600 hover:text-red-900 transition" title="Delete">
-                                <i class="fas fa-trash"></i>
+                            })" class="text-danger hover:text-red-700 transition transform hover:scale-110" title="Xóa">
+                                <i class="fas fa-trash-alt text-lg"></i>
                             </button>
                         </td>
                     </tr>
                 `;
           tableBody.innerHTML += row;
         });
-
         updatePaginationControls(totalPages);
       }
 
@@ -384,7 +401,7 @@
       function updatePaginationControls(totalPages) {
         document.getElementById(
           "pageInfo"
-        ).innerText = `Page ${currentPage} of ${totalPages}`;
+        ).innerText = `Trang ${currentPage} / ${totalPages}`;
         document.getElementById("prevBtn").disabled = currentPage === 1;
         document.getElementById("nextBtn").disabled =
           currentPage === totalPages;
@@ -399,23 +416,21 @@
         const modal = document.getElementById("userModal");
         const title = document.getElementById("modalTitle");
         const form = document.getElementById("userForm");
-
         form.reset();
         document.getElementById("userId").value = "";
 
         if (userId) {
           const user = users.find((u) => u.id === userId);
           if (user) {
-            title.innerText = "Edit User";
+            title.innerText = "Cập nhật thông tin";
             document.getElementById("userId").value = user.id;
             document.getElementById("name").value = user.name;
             document.getElementById("email").value = user.email;
             document.getElementById("phone").value = user.phone;
           }
         } else {
-          title.innerText = "Add New User";
+          title.innerText = "Thêm người dùng";
         }
-
         modal.classList.remove("hidden");
       }
 
@@ -436,15 +451,16 @@
 
         toastMsg.innerText = message;
         if (type === "error") {
-          toastIcon.className = "fas fa-times-circle text-red-400";
+          toastIcon.className = "fas fa-times-circle text-white text-xl";
+          toast.classList.replace("bg-cafe", "bg-danger");
         } else {
-          toastIcon.className = "fas fa-check-circle text-green-400";
+          toastIcon.className = "fas fa-check-circle text-be text-xl";
+          toast.classList.replace("bg-danger", "bg-cafe");
         }
 
-        toast.classList.remove("translate-y-20");
-
+        toast.classList.remove("translate-y-40");
         setTimeout(() => {
-          toast.classList.add("translate-y-20");
+          toast.classList.add("translate-y-40");
         }, 3000);
       }
     </script>
