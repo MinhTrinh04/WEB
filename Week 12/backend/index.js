@@ -30,6 +30,28 @@ app.post('/api/students', async (req, res) => {
     }
 });
 
+app.put('/api/students/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, age, class: stuClass } = req.body; // Lấy dữ liệu mới
+
+        // Tìm theo ID và cập nhật, { new: true } để trả về dữ liệu mới sau khi sửa
+        const updatedStudent = await Student.findByIdAndUpdate(
+            id,
+            { name, age, class: stuClass },
+            { new: true }
+        );
+
+        if (!updatedStudent) {
+            return res.status(404).json({ error: "Student not found" });
+        }
+
+        res.json(updatedStudent);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

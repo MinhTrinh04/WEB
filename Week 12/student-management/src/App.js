@@ -9,28 +9,50 @@ function App() {
   const [age, setAge] = useState("");
   const [stuClass, setStuClass] = useState("");
 
+  const [editingId, setEditingId] = useState(null);
+
   useEffect(() => {
     axios.get('http://localhost:5000/api/students')
       .then(response => setStudents(response.data))
-      .catch(error => console.error("Lỗi khi fetch danh sách:", error));
+      .catch(error => console.error("Lỗi fetch:", error));
   }, []);
 
-  const handleAddStudent = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    const studentData = { name, age: Number(age), class: stuClass };
 
-    const newStudent = { name, age: Number(age), class: stuClass };
+    if (editingId) {
+      axios.put(`http://localhost:5000/api/students/${editingId}`, studentData)
+        .then(res => {
+          console.log("Đã cập nhật:", res.data);
+          setStudents(prev => prev.map(s => s._id === editingId ? res.data : s));
 
-    axios.post('http://localhost:5000/api/students', newStudent)
-      .then(res => {
-        console.log("Đã thêm:", res.data);
+          resetForm();
+        })
+        .catch(err => console.error("Lỗi cập nhật:", err));
+    } else {
+      axios.post('http://localhost:5000/api/students', studentData)
+        .then(res => {
+          console.log("Đã thêm:", res.data);
+          setStudents(prev => [...prev, res.data]);
+          resetForm();
+        })
+        .catch(err => console.error("Lỗi thêm:", err));
+    }
+  };
 
-        setStudents(prev => [...prev, res.data]);
+  const startEdit = (student) => {
+    setEditingId(student._id);
+    setName(student.name);
+    setAge(student.age);
+    setStuClass(student.class);
+  };
 
-        setName("");
-        setAge("");
-        setStuClass("");
-      })
-      .catch(err => console.error("Lỗi khi thêm:", err));
+  const resetForm = () => {
+    setName("");
+    setAge("");
+    setStuClass("");
+    setEditingId(null);
   };
 
   return (
@@ -38,33 +60,29 @@ function App() {
       <h1>Quản Lý Học Sinh</h1>
 
       <div style={{ marginBottom: "20px", border: "1px solid #ddd", padding: "10px" }}>
-        <h3>Thêm Học Sinh Mới</h3>
-        <form onSubmit={handleAddStudent}>
+        <h3>{editingId ? "Chỉnh Sửa Thông Tin" : "Thêm Học Sinh Mới"}</h3>
+
+        <form onSubmit={handleSubmit}>
           <input
-            type="text"
-            placeholder="Họ tên"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            required
-            style={{ marginRight: "10px" }}
+            type="text" placeholder="Họ tên" value={name}
+            onChange={e => setName(e.target.value)} required style={{ marginRight: "10px" }}
           />
           <input
-            type="number"
-            placeholder="Tuổi"
-            value={age}
-            onChange={e => setAge(e.target.value)}
-            required
-            style={{ marginRight: "10px" }}
+            type="number" placeholder="Tuổi" value={age}
+            onChange={e => setAge(e.target.value)} required style={{ marginRight: "10px" }}
           />
           <input
-            type="text"
-            placeholder="Lớp"
-            value={stuClass}
-            onChange={e => setStuClass(e.target.value)}
-            required
-            style={{ marginRight: "10px" }}
+            type="text" placeholder="Lớp" value={stuClass}
+            onChange={e => setStuClass(e.target.value)} required style={{ marginRight: "10px" }}
           />
-          <button type="submit">Thêm</button>
+
+          <button type="submit">{editingId ? "Cập Nhật" : "Thêm"}</button>
+
+          {editingId && (
+            <button type="button" onClick={resetForm} style={{ marginLeft: "10px", background: "grey" }}>
+              Hủy
+            </button>
+          )}
         </form>
       </div>
 
@@ -74,6 +92,7 @@ function App() {
             <th>Họ Tên</th>
             <th>Tuổi</th>
             <th>Lớp</th>
+            <th>Hành Động</th>
           </tr>
         </thead>
         <tbody>
@@ -82,6 +101,9 @@ function App() {
               <td>{student.name}</td>
               <td>{student.age}</td>
               <td>{student.class}</td>
+              <td>
+                <button onClick={() => startEdit(student)}>Sửa</button>
+              </td>
             </tr>
           ))}
         </tbody>
