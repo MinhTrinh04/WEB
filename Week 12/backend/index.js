@@ -33,9 +33,8 @@ app.post('/api/students', async (req, res) => {
 app.put('/api/students/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, age, class: stuClass } = req.body; // Lấy dữ liệu mới
+        const { name, age, class: stuClass } = req.body;
 
-        // Tìm theo ID và cập nhật, { new: true } để trả về dữ liệu mới sau khi sửa
         const updatedStudent = await Student.findByIdAndUpdate(
             id,
             { name, age, class: stuClass },
@@ -49,6 +48,22 @@ app.put('/api/students/:id', async (req, res) => {
         res.json(updatedStudent);
     } catch (err) {
         res.status(400).json({ error: err.message });
+    }
+});
+
+app.delete('/api/students/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedStudent = await Student.findByIdAndDelete(id);
+
+        if (!deletedStudent) {
+            return res.status(404).json({ error: "Student not found" });
+        }
+
+        res.json({ message: "Đã xóa học sinh thành công", id: deletedStudent._id });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 

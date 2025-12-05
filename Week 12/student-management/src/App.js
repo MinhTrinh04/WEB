@@ -5,10 +5,10 @@ import './App.css';
 function App() {
   const [students, setStudents] = useState([]);
 
+  // State cho Form
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [stuClass, setStuClass] = useState("");
-
   const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
@@ -17,6 +17,17 @@ function App() {
       .catch(error => console.error("Lỗi fetch:", error));
   }, []);
 
+  const handleDelete = (id) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa học sinh này không?")) {
+      axios.delete(`http://localhost:5000/api/students/${id}`)
+        .then(res => {
+          console.log(res.data.message);
+          setStudents(prev => prev.filter(student => student._id !== id));
+        })
+        .catch(err => console.error("Lỗi khi xóa:", err));
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const studentData = { name, age: Number(age), class: stuClass };
@@ -24,16 +35,13 @@ function App() {
     if (editingId) {
       axios.put(`http://localhost:5000/api/students/${editingId}`, studentData)
         .then(res => {
-          console.log("Đã cập nhật:", res.data);
           setStudents(prev => prev.map(s => s._id === editingId ? res.data : s));
-
           resetForm();
         })
         .catch(err => console.error("Lỗi cập nhật:", err));
     } else {
       axios.post('http://localhost:5000/api/students', studentData)
         .then(res => {
-          console.log("Đã thêm:", res.data);
           setStudents(prev => [...prev, res.data]);
           resetForm();
         })
@@ -61,28 +69,12 @@ function App() {
 
       <div style={{ marginBottom: "20px", border: "1px solid #ddd", padding: "10px" }}>
         <h3>{editingId ? "Chỉnh Sửa Thông Tin" : "Thêm Học Sinh Mới"}</h3>
-
         <form onSubmit={handleSubmit}>
-          <input
-            type="text" placeholder="Họ tên" value={name}
-            onChange={e => setName(e.target.value)} required style={{ marginRight: "10px" }}
-          />
-          <input
-            type="number" placeholder="Tuổi" value={age}
-            onChange={e => setAge(e.target.value)} required style={{ marginRight: "10px" }}
-          />
-          <input
-            type="text" placeholder="Lớp" value={stuClass}
-            onChange={e => setStuClass(e.target.value)} required style={{ marginRight: "10px" }}
-          />
-
+          <input type="text" placeholder="Họ tên" value={name} onChange={e => setName(e.target.value)} required style={{ marginRight: "10px" }} />
+          <input type="number" placeholder="Tuổi" value={age} onChange={e => setAge(e.target.value)} required style={{ marginRight: "10px" }} />
+          <input type="text" placeholder="Lớp" value={stuClass} onChange={e => setStuClass(e.target.value)} required style={{ marginRight: "10px" }} />
           <button type="submit">{editingId ? "Cập Nhật" : "Thêm"}</button>
-
-          {editingId && (
-            <button type="button" onClick={resetForm} style={{ marginLeft: "10px", background: "grey" }}>
-              Hủy
-            </button>
-          )}
+          {editingId && <button type="button" onClick={resetForm} style={{ marginLeft: "10px", background: "grey" }}>Hủy</button>}
         </form>
       </div>
 
@@ -102,7 +94,15 @@ function App() {
               <td>{student.age}</td>
               <td>{student.class}</td>
               <td>
-                <button onClick={() => startEdit(student)}>Sửa</button>
+                <button onClick={() => startEdit(student)} style={{ marginRight: "5px" }}>Sửa</button>
+
+                {/* --- NÚT XÓA (MỚI) --- */}
+                <button
+                  onClick={() => handleDelete(student._id)}
+                  style={{ background: "red", color: "white", border: "none", cursor: "pointer" }}
+                >
+                  Xóa
+                </button>
               </td>
             </tr>
           ))}
