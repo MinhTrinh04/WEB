@@ -21,6 +21,15 @@ app.get('/api/students', async (req, res) => {
     }
 });
 
+app.post('/api/students', async (req, res) => {
+    try {
+        const newStudent = await Student.create(req.body);
+        res.status(201).json(newStudent);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
